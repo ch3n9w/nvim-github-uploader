@@ -98,7 +98,7 @@ function upload_img(token, repo, path, filename, message, committer_name, commit
         string.format("{\"message\":\"%s\",\"committer\":{\"name\":\"%s\",\"email\":\"%s\"},\"content\":\"%s\"}", message
             , committer_name, committer_email, base64content)
     }
-    vim.pretty_print(job)
+    -- vim.pretty_print(job)
     vim.fn.jobstart(job, {
         on_stdout = callbackfn,
     })

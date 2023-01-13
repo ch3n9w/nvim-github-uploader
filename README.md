@@ -20,7 +20,6 @@ require'nvim-github-uploader'.setup({
     img_name = function()
         return os.date "%Y-%m-%d-%H-%M-%S.png"
     end,
-    img_handler = function (name, path) end,
     affix = "![](%s)",
     message = "upload image",
     committer_name = "uploader",
@@ -28,7 +27,6 @@ require'nvim-github-uploader'.setup({
     notice = "notify",
     tmp_file = "/tmp/nvim-github-uploader",
     show_name = true,
-    debug = true,
     })
 ```
 
