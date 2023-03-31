@@ -44,12 +44,12 @@ local function callbackfn(job_id, data, _)
     if data[1]:match("20") == nil then
         -- print(vim.inspect(data))
         if data[1] ~= "" then
-            utils.notice_msg(false)
+            utils.notice_success(false)
         end
         vim.fn.jobstop(job_id)
         return
     end
-    utils.notice_msg(true)
+    utils.notice_success(true)
 
     -- upload success, extract url from response body
     local regex = vim.regex("https://raw.githubusercontent.com.*\"")

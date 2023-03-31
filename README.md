@@ -35,6 +35,11 @@ require'nvim-github-uploader'.setup({
 ```lua
 <cmd>lua require'nvim-github-uploader'.upload_img()<cr>
 ```
+or using command 
+```lua
+:UploadClipboard
+```
+
 ## Thanks
 [nvim-picgo](https://github.com/askfiy/nvim-picgo)
 [clipboard-image.nvim](https://github.com/ekickx/clipboard-image.nvim)

@@ -56,7 +56,7 @@ M.is_clipboard_img = function(type)
     return false
 end
 
-M.notice_msg = function(state)
+M.notice_success = function(state)
     local notice = require("nvim-github-uploader.config").get_config().notice
     if state then
         local msg = "Upload image success"
