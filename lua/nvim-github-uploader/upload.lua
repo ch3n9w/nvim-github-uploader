@@ -93,7 +93,7 @@ function upload_img(token, repo, path, filename, message, committer_name, commit
         "-X", "PUT",
         "-H", "Accept: application/vnd.github+json",
         "-H", "Authorization: Bearer " .. token,
-        string.format("https://api.github.com/repos/%s/contents/%s%s", repo, path, filename),
+        string.format("https://api.github.com/repos/%s/contents/%s/%s", repo, path, filename),
         "-d",
         string.format("{\"message\":\"%s\",\"committer\":{\"name\":\"%s\",\"email\":\"%s\"},\"content\":\"%s\"}", message
             , committer_name, committer_email, base64content)
