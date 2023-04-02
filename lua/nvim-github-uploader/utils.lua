@@ -22,13 +22,27 @@ M.get_clip_command = function()
         local display_server = os.getenv "XDG_SESSION_TYPE"
         if display_server == "x11" or display_server == "tty" then
             cmd_check = "xclip -selection clipboard -o -t TARGETS"
-            cmd_paste = "xclip -selection clipboard -t image/png -o > '%s'"
+            cmd_paste = "xclip -selection clipboard -t image/png -o | base64 -w 0 > '%s'"
         elseif display_server == "wayland" then
             cmd_check = "wl-paste --list-types"
-            cmd_paste = "wl-paste --no-newline --type image/png > '%s'"
+            cmd_paste = "wl-paste --no-newline --type image/png | base64 -w 0 > '%s'"
         end
     end
     return cmd_check, cmd_paste
+end
+
+M.get_curl_data_command_1 = function(message, committer_name, committer_email, from_where)
+    local header = string.format([[{"message":"%s","committer":{"name":"%s","email":"%s"},"content":"]], message, committer_name, committer_email)
+local ender = [["}]]
+    local insert_command = string.format([[sed -i '1s/^/%q/' %q]], header, from_where)
+    local append_command = string.format([[echo %q >> %q]], ender, from_where)
+    return insert_command, append_command
+end
+
+M.get_curl_data_command = function()
+    local insert_command = [[sed -i '1s/^/{"message":"%s","committer":{"name":"%s","email":"%s"},"content":"/' %q]]
+    local append_command = [[echo '"}' >> %q]]
+    return insert_command, append_command
 end
 
 M.get_clip_content = function(command)
