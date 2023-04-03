@@ -40,9 +40,6 @@ M.upload_clip = function()
             conf.repo,
             conf.path,
             image_name,
-            conf.message,
-            conf.committer_name,
-            conf.committer_email,
             conf.tmp_file
         )
     end
