@@ -49,7 +49,7 @@ local function callbackfn(job_id, data, _)
     -- if request status code is not 20x, exit
     -- after success upload, there will be another callbackfn where the data is {""}
     if data[1]:match("20") == nil then
-        print(vim.inspect(data))
+        -- print(vim.inspect(data))
         if data[1] ~= "" then
             utils.notice_success(false)
         end
@@ -84,6 +84,7 @@ local function callbackfn(job_id, data, _)
         end
     end
     -- insert image link into content
+    -- vim.pretty_print(img_link)
     utils.insert_txt(img_link)
 end
 

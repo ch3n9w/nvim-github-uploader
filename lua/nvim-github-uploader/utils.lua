@@ -31,17 +31,9 @@ M.get_clip_command = function()
     return cmd_check, cmd_paste
 end
 
-M.get_curl_data_command_1 = function(message, committer_name, committer_email, from_where)
-    local header = string.format([[{"message":"%s","committer":{"name":"%s","email":"%s"},"content":"]], message, committer_name, committer_email)
-local ender = [["}]]
-    local insert_command = string.format([[sed -i '1s/^/%q/' %q]], header, from_where)
-    local append_command = string.format([[echo %q >> %q]], ender, from_where)
-    return insert_command, append_command
-end
-
 M.get_curl_data_command = function()
-    local insert_command = [[sed -i '1s/^/{"message":"%s","committer":{"name":"%s","email":"%s"},"content":"/' %q]]
-    local append_command = [[echo '"}' >> %q]]
+    local insert_command = [[sed -i '1s/^/{"message":"%s","committer":{"name":"%s","email":"%s"},"content":"/' %s]]
+    local append_command = [[echo '"}' >> %s]]
     return insert_command, append_command
 end
 
@@ -92,36 +84,9 @@ M.notice_success = function(state)
 end
 
 M.insert_txt = function(url_txt)
-    local curpos = vim.fn.getcurpos()
-    local line_num, line_col = curpos[2], curpos[3]
-    local indent = string.rep(" ", line_col)
-    local txt_topaste = url_txt
-
-    ---Convert txt_topaste to lines table so it can handle multiline string
-    local lines = {}
-    for line in txt_topaste:gmatch "[^\r\n]+" do
-        table.insert(lines, line)
-    end
-
-    for line_index, line in pairs(lines) do
-        local current_line_num = line_num + line_index - 1
-        local current_line = vim.fn.getline(current_line_num)
-        ---Since there's no collumn 0, remove extra space when current line is blank
-        if current_line == "" then
-            indent = indent:sub(1, -2)
-        end
-
-        local pre_txt = current_line:sub(1, line_col)
-        local post_txt = current_line:sub(line_col + 1, -1)
-        local inserted_txt = pre_txt .. line .. post_txt
-
-        vim.fn.setline(current_line_num, inserted_txt)
-        ---Create new line so inserted_txt doesn't replace next lines
-        if line_index ~= #lines then
-            vim.fn.append(current_line_num, indent)
-        end
-    end
+    local current_buf = vim.api.nvim_get_current_buf()
+    local current_line = vim.api.nvim_win_get_cursor(0)[1] - 1
+    vim.api.nvim_buf_set_lines(current_buf, current_line, current_line, false, { url_txt })
 end
-
 
 return M
